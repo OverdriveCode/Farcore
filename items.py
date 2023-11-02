@@ -128,7 +128,7 @@ items_all = {
             'staff': False,
             'description':
             f'A glowing {red}red{ironc}pink{white} stone. {orange}Warm{white} to the {copper}touch{white}. Said to cure any {darkgrey}illness{white}',
-            'selling price': 20,
+            'selling price': 10,
             'fuse': False
         },
         'hyper heal potion': {
@@ -194,6 +194,17 @@ items_all = {
             'staff': False,
             'description':
             f'A {brown}wooden cup{white} filled with {orange}firey{grey} smoking{white} liquid. A specialty drink from {darkgrey}The Black Boar{white}',
+            'selling price': 3,
+            'fuse': False
+        },
+        'potion of rage': {
+            'name': 'potion of rage',
+            'consumable': True,
+            'weapon': False,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A glass of {gold}bubbling{white} {red}red surup{white}. Made to bring out your {purple}inner{white} {darkgrey}beserker{white}!',
             'selling price': 3,
             'fuse': False
         },
@@ -535,6 +546,17 @@ items_all = {
             'selling price': 16,
             'fuse': False
         },
+        'sun scimitar': {
+            'name': 'sun scimitar',
+            'consumable': False,
+            'weapon': True,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A tall {darkgrey}curved{white} {gold}golden blade{white}. Said to {red}harness{white} the {orange}SUN\'s POWER{white}. This {darkgrey}weapon{white} is only claimed by the {red}death{white} of the owner.',
+            'selling price': 30,
+            'fuse': False
+        },
         'kobold scimitar': {
             'name': 'kobold scimitar',
             'consumable': False,
@@ -722,6 +744,17 @@ items_all = {
             'selling price': 100,
             'fuse': False
         },
+        'light shortsword': {
+            'name': 'light shortsword',
+            'consumable': False,
+            'weapon': True,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A very {darkgrey}small{white} dagger-like {gold}sword{white}. Often used in the {red}left hand{white} as an {brown}second{white} weapon.',
+            'selling price': 20,
+            'fuse': False
+        },
         'magic sword': {
             'name': 'magic sword',
             'consumable': False,
@@ -810,7 +843,6 @@ items_all = {
             'selling price': 1,
             'fuse': False
         },
-
         'grim dagger': {
             'name': 'grim dagger',
             'consumable': False,
@@ -985,6 +1017,17 @@ items_all = {
             'description':
             f'A short {grey}iron{white} axe. Used to cut down {brown}trees{white}.',
             'selling price': 6,
+            'fuse': False
+        },
+        'jade harpoon': {
+            'name': 'jade harpoon',
+            'consumable': False,
+            'weapon': True,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A deadly {purple}purple{white} {darkgrey}weapon{white} of the sea. Used by {blue}Merr{purple}ows{white} this item is considered {red}CURSED{white}.',
+            'selling price': 40,
             'fuse': False
         },
         'grogs axe of smashing': {
@@ -1424,6 +1467,17 @@ items_all = {
             'selling price': 2,
             'fuse': False
         },
+        'metal scrap': {
+            'name': 'metal scrap',
+            'consumable': False,
+            'weapon': False,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A small piece of {darkgrey}metal{white}.',
+            'selling price': 1,
+            'fuse': False
+        },
         'water bottle': {
             'name': 'water bottle',
             'consumable': False,
@@ -1571,6 +1625,17 @@ items_all = {
             'selling price': 3,
             'fuse': True
         },
+        'ogre nail': {
+            'name': 'ogre nail',
+            'consumable': False,
+            'weapon': False,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A huge {yellow}yellowish{white} {darkgrey}silver{white} nail. Large enought to be used as a {blue}Shield{white}.',
+            'selling price': 5,
+            'fuse': True
+        },
         'yeti eye': {
             'name': 'yeti eye',
             'consumable': False,
@@ -1670,6 +1735,28 @@ items_all = {
             'selling price': 10,
             'fuse': True
         },
+        'acid goo': {
+            'name': 'mutant goo',
+            'consumable': False,
+            'weapon': False,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A mass of {lime}radoactive goo{white} that {orange}burns{white} you if you {darkgrey}touch{white} it.',
+            'selling price': 5,
+            'fuse': True
+        },
+        'rock core': {
+            'name': 'rock core',
+            'consumable': False,
+            'weapon': False,
+            'shield': False,
+            'staff': False,
+            'description':
+            f'A lump of {darkgrey}hardened{white} {orange}magma{white} rock. Gives off a lot of {red}heat{white} and is very {purple}heavy{white}',
+            'selling price': 10,
+            'fuse': True
+        },
     }
     
 weapons_all = {
@@ -1699,6 +1786,8 @@ weapons_all = {
                         "durability": 20, "reload": 0, "two handed": False, "req": {}, "crit": 2},
         'heart sword': {'hit': 2, 'damage': 7, 'special': False, "special text": "", "speed": 10, "sweep": 1,
                         "durability": 20, "reload": 0, "two handed": False, "req": {}, "crit": 0},
+        'light shortsword': {'hit': 2, 'damage': 8, 'special': False, "special text": "", "speed": 9, "sweep": 0.9,
+                        "durability": 20, "reload": 0, "two handed": False, "req": {}, "crit": 1},
         'jungle blade': {'hit': 5, 'damage': 8, 'special': "poison", "special text": f"Ugly {green}green{white} blood {lime}oozes{white} out of their {red}wound{white}", "speed": 6, "sweep": 1,
                         "durability": 20, "reload": 0, "two handed": False, "req": {}, "crit": 1}, 
         'double bladed sword': {'hit': -1, 'damage': 10, 'special': False, "special text": "", "speed": 6000000000, "sweep": 1,
@@ -1783,6 +1872,8 @@ weapons_all = {
                     "durability": 20, "reload": 0, "two handed": False, "req": {}},
         'master scimitar': {'hit': 2, 'damage': 8, 'special': "shock", "special text": f"The {red}enemies{white} body {paleyellow}crackles{white} with {yellow}electricity{white}.", "speed": 5, "sweep": 1.5,
                     "durability": 25, "reload": 0, "two handed": False, "req": {"dex": 5}},
+        'sun scimitar': {'hit': 3, 'damage': 12, 'special': "burn", "special text": f"The {red}enemies{white} body is {red}lit{white} up in {orange}fiery flames{white}", "speed": 5, "sweep": 1.5,
+                    "durability": 30, "reload": 0, "two handed": False, "req": {"dex": 5}},
         'scimitar': {'hit': 4, 'damage': 6, 'special': False, "special text": "", "speed": 4, "sweep": 1,
                     "durability": 25, "reload": 0, "two handed": False, "req": {"dex": 5}},
 
@@ -1811,8 +1902,8 @@ weapons_all = {
                     "durability": 20, "reload": 0, "two handed": False, "req": {}},
         'cross-saber': {'hit': 4, 'damage': 8, 'special': "bleed", "special text": f"A large {red}gash{white} appears", "speed": 5, "sweep": 1.5,
                     "durability": 20, "reload": 0, "two handed": True, "req": {"dex": 6}},
-        'warped saber': {'hit': 4, 'damage': 9, 'special': "drain", "special text": f"The {red}target{white} wound turns {darkgrey}grey{white} and {purple}shrivels{white}", "speed": 5, "sweep": 1.5,
-                    "durability": 30, "reload": 0, "two handed": True, "req": {"dex": 6}, "damage to all": 5},
+        'warped saber': {'hit': 4, 'damage': 16, 'special': "acid", "special text": f"{lime}Radoactive{white} goo covered the {red}enemy{white} causing a {orange}deadly burn{white}.", "speed": 5, "sweep": 1.5,
+                    "durability": 30, "reload": 0, "two handed": True, "req": {"dex": 6}, "damage to all": 8},
         'trident': {'hit': 6, 'damage': 8, 'special': False, "special text": "", "speed": 3, "sweep": 1,
                     "durability": 30, "reload": 0, "two handed": False, "req": {}, "crit": 1},
 
@@ -1828,6 +1919,8 @@ weapons_all = {
                         "durability": 9, "reload": 0, "two handed": False, "req": {}, "crit": 3},  
         'jade scythe': {'hit': 0, 'damage': 15, 'special': "life steal", "special text": f"The {red}enemy{white} turns a {darkgrey}shadowly grey{white} as it\'s {red}lifeforce{white} is being {purple}drained{white}", "speed": 10, "sweep": 2,
                         "durability": 20, "reload": 0, "two handed": True, "req": {}},   
+        'jade harpoon': {'hit': 1, 'damage': 16, 'special': ["life steal", "life steal", "life steal"], "special text": [f"The {red}enemy{white} turns a {darkgrey}shadowly grey{white} as it\'s {red}lifeforce{white} is being {purple}drained{white}",f"The {red}enemy{white} turns a {darkgrey}shadowly grey{white} as it\'s {red}lifeforce{white} is being {purple}drained{white}", f"The {red}enemy{white} turns a {darkgrey}shadowly grey{white} as it\'s {red}lifeforce{white} is being {purple}drained{white}"], "speed": 13, "sweep": 1.3,
+                        "durability": 20, "reload": 0, "two handed": True, "req": {"str": 5, "dex": 5}},   
         'spear': {'hit': 1, 'damage': 6, 'special': False, "special text": "", "speed": 5, "sweep": 2.2,
                             "durability": 20, "reload": 0, "two handed": True, "req": {}},
         'lightning spear': {'hit': 5, 'damage': 8, 'special': "lightning", "special text": f"A {gold}lightning bolt{white} from the {darkgrey}cloudy{white} sky {red}strikes{white} the {copper}enemy{white}", "speed": 5, "sweep": 2.2,
@@ -2176,6 +2269,19 @@ enemies_all = {
             "exp": 50,
             "death": f"The {brown}bugbear{white} collapses to the {darkgrey}ground{white} in a deafening {orange}thud{white}."
         },
+        "goliath": {
+            "attack": f"The {teal}gol{darkgrey}iath{white} swings a {red}massive{white} {purple}curved claymore{white} at you",
+            'health': 80,
+            'damage': 20,
+            "elemental": 'bleed',
+            "armor": 8,
+            'drop': {"curved claymore": 5, "healing stone": 1},
+            "dex": -1,
+            "str": 10,
+            "gold": 40,
+            "exp": 60,
+            "death": f"The {teal}gol{darkgrey}iath{white} screams out {red}curses{white}, dying."
+        },
         "wooly mammoth": {
             "attack": f"The {brown}wooly{blue} mammoth{white} rams into you!",
             'health': 40,
@@ -2203,6 +2309,171 @@ enemies_all = {
             "gold": 40,
             "exp": 50,
             "death": f"The {darkgrey}assasin{white} takes a {green}posion pill{white} insuring that no {blue}secrets{white} would be spilled..."
+        },
+        "merrow": {
+            "attack": [f"The {purple}Merr{blue}ow{white} throws its {darkgrey}harpoon{white} at you",
+                        f"The {purple}Merr{blue}ow{white} jabs its {darkgrey}harpoon{white} at you",
+                        f"The {purple}Merr{blue}ow{white} shoots a {blue}blast{white} of {turquoise}water{white} at you"],
+            'health': 50,
+            'damage': [20, 15, 8],
+            "elemental": ["life steal", "life steal", "confusion"],
+            "armor": 10,
+            'drop': {"jade harpoon": 5},
+            "dex": [1, 3, 10],
+            "str": 5,
+            "gold": 50,
+            "exp": 50,
+            "death": f"The {purple}Merr{blue}or{white} utters a {red}cry{white} at it jumps back into the {turquoise}water{white} never to be seen again..."
+        },
+        "monk lvl [1]": {
+            "attack": [f"The {gold}Monk{white} punches and {red}jabs{white} at you",
+                        f"The {gold}Monk{white} {blue}meditates{white}",],
+            'health': 30,
+            'damage': [10, "dam buff"],
+            "elemental": ["confusion", "none"],
+            "armor": 9,
+            'drop': {},
+            "dex": [5, 10],
+            "str": 5,
+            "gold": 30,
+            "exp": 20,
+            "death": f"The {gold}Monk{white} bows and tells you the {red}battle{white} is {purple}over{white}"
+        },
+        "monk lvl [2]": {
+            "attack": [f"The {gold}Monk{white} punches and {red}jabs{white} at you",
+                        f"The {gold}Monk{white} {blue}meditates{white}",
+                        f"The {gold}Monk{white} throws a {darkgrey}spear{white} at you"],
+            'health': 40,
+            'damage': [10, "dam buff", 15],
+            "elemental": ["confusion", "none", "bleed"],
+            "armor": 10,
+            'drop': {"spear": 10},
+            "dex": [6, 10, 3],
+            "str": 7,
+            "gold": 40,
+            "exp": 40,
+            "death": f"The {gold}Monk{white} bows and tells you the {red}battle{white} is {purple}over{white}"
+        },
+        "monk lvl [3]": {
+            "attack": [f"The {gold}Monk{white} punches and {red}jabs{white} at you",
+                        f"The {gold}Monk{white} {blue}meditates{white}",
+                        f"The {gold}Monk{white} throws a {darkgrey}spear{white} at you",
+                        f'The {gold}Monk{white} shoots a blast of {orange}CHI{white} at you'],
+            'health': 60,
+            'damage': [10, "dam buff", 15, 15],
+            "elemental": ["confusion", "none", "bleed", "drain"],
+            "armor": 11,
+            'drop': {"spear": 10},
+            "dex": [8, 10, 5, 9],
+            "str": 9,
+            "gold": 60,
+            "exp": 60,
+            "death": f"The {gold}Monk{white} bows and tells you the {red}battle{white} is {purple}over{white}"
+        },
+        "monk lvl [4]": {
+            "attack": [f"The {gold}Monk{white} punches and {red}jabs{white} at you",
+                        f"The {gold}Monk{white} {blue}meditates{white}",
+                        f"The {gold}Monk{white} throws a {darkgrey}spear{white} at you",
+                        f'The {gold}Monk{white} shoots a blast of {orange}CHI{white} at you',
+                        f"The {gold}Monk{white} sends a {red}fire{white} {darkgrey}kick{white} at you"],
+            'health': 80,
+            'damage': [10, "dam buff", 15, 15, 25],
+            "elemental": ["confusion", "none", "bleed", "drain", "burn"],
+            "armor": 12,
+            'drop': {"spear": 10},
+            "dex": [10, 10, 7, 12, 5],
+            "str": 10,
+            "gold": 80,
+            "exp": 80,
+            "death": f"The {gold}Monk{white} bows and tells you the {red}battle{white} is {purple}over{white}"
+        },
+        "you": {
+            "attack": f'{purple}You{white} {red}attack{white} yourself using your {darkgrey}weapon{white}',
+            'health': 123,
+            'damage': 123,
+            "elemental": "none",
+            "armor": 123,
+            'drop': {"totem of undying": 1},
+            "dex": 123,
+            "str": 123,
+            "gold": 123,
+            "exp": 123,
+            "death": f"You {red}die{white}, the other {purple}you{white}"
+        },
+        
+        #Core-sail Enemies
+        "muck the mutant": { 
+            "attack": [f"{lime}Muck{white} the {darkgrey}mutant{white} bleches out {orange}burning acid{white} at you", 
+                       f"{lime}Muck{white} the {darkgrey}mutant{white} regenerates more {orange}goo{white}"],
+            'health': 60,
+            'damage': [10, "heal"],
+            "elemental": ['acid', "none"],
+            "armor": 6,
+            'drop': {"acid goo": 3},
+            "dex": [3, 10],
+            "str": 5,
+            "gold": 20,
+            "exp": 30,
+            "death": f"{lime}Muck{white} the {darkgrey}mutant{white} has been {red}Eliminated{white} from the {blue}Core-sail{white} Arena"
+        },
+        "zanders the pirate": { 
+            "attack": [f"{darkgrey}Zanders{white} slashes at you with a {orange}sun scimitar{white}", 
+                       f"{darkgrey}Zanders{white} throws a {red}knife{white} at you"],
+            'health': 60,
+            'damage': [15, 10],
+            "elemental": ['burn', "none"],
+            "armor": 11,
+            'drop': {"sun scimitar": 5},
+            "dex": [2, 5],
+            "str": 5,
+            "gold": 40,
+            "exp": 50,
+            "death": f"{darkgrey}Zanders{white} the {gold}Pirate{white} has been {red}Eliminated{white} from the {blue}Core-sail{white} Arena"
+        },
+        "the rock giant": { 
+            "attack": [f"The {copper}Rock{darkgrey} Giant{white} throws a {red}massive{brown} stone{white} at you", 
+                       f"The {copper}Rock{darkgrey} Giant{white} slams its {red}hands{white} together {yellow}crushing{white} you",
+                       f"The {copper}Rock{darkgrey} Giant{white} stomps on you"],
+            'health': 120,
+            'damage': [20, 15, 30],
+            "elemental": ['none', "confusion", "none"],
+            "armor": 8,
+            'drop': {"rock core": 5},
+            "dex": [-1, 3, 1],
+            "str": 12,
+            "gold": 70,
+            "exp": 70,
+            "death": f"The {copper}Rock{darkgrey} Giant{white} has been {red}Eliminated{white} from the {blue}Core-sail{white} Arena"
+        },
+        "blade of the north": { 
+            "attack": [f"The {darkgrey}Blade{white} of the {blue}North{white} jumps up and {red}slashes{white} you!", 
+                       f"The {darkgrey}Blade{white} of the {blue}North{white} starts {purple}spinning{white} with {red}streaking{white} blades.",
+                       f"The {darkgrey}Blade{white} of the {blue}North{white} shield {red}bashes{white} you"],
+            'health': 100,
+            'damage': [30, 40, 20],
+            "elemental": ['bleed', "bleed", "confusion"],
+            "armor": 12,
+            'drop': {"shield of blocking": 5},
+            "dex": [4, 2, 6],
+            "str": 8,
+            "gold": 100,
+            "exp": 100,
+            "death": f"The {darkgrey}Blade{white} of the {blue}North{white} has been {red}Eliminated{white} from the {blue}Core-sail{white} Arena"
+        },
+        "other worlder": { 
+            "attack": [f"The {purple}Other{orange} Worlder{white} beams you with a {lime}gamma{white} ray.", 
+                       f"The {purple}Other{orange} Worlder{white} fire a {turquoise}hyper{white} {darkgrey}cannon{white}",
+                       f"The {purple}Other{orange} Worlder{white} slashes you with a {red}warped{gold} saber{white}"],
+            'health': 200,
+            'damage': [30, 70, 50],
+            "elemental": ['acid', "confusion", "drain"],
+            "armor": 9,
+            'drop': {"world token": 5},
+            "dex": [8, -1, 5],
+            "str": 8,
+            "gold": 200,
+            "exp": 200,
+            "death": f"The {purple}Other{orange} Worlder{white} has been {red}Eliminated{white} from the {blue}Core-sail{white} Arena"
         },
 
         # Monster Enemies
@@ -2389,7 +2660,22 @@ enemies_all = {
             "gold": 12,
             "exp": 40,
             "death": f"The {purple}stranger{white} disappears {platinum}in mist{white}."
-        },   
+        }, 
+        "bandit lord": {
+            "attack": [f"The {yellow}BANDIT LORD{white} slash a {red}master{white} {paleyellow}scimtar{white} at you",
+                        f"The {yellow}BANDIT LORD{white} steals some {gold}gold{white} from you",
+                        f"The {yellow}BANDIT LORD{white} thows a {darkgrey}dagger{white} at you"],
+            'health': 20,
+            'damage': [6, "steal", 4],
+            "elemental": ["shock", "none", "none"],
+            "armor": 14,
+            'drop': {"master scimitar": 5, "lightning stone": 10, "dagger": 12, "dagger swarm scroll": 5},
+            "dex": [2, 10, 5],
+            "str": 4,
+            "gold": 20,
+            "exp": 80,
+            "death": f"The {yellow}Bandit Lord{white} falls to the {brown}ground{white}, {paleyellow}scimtar{white} in hand"
+        },  
         "orc warlord": {
             "attack": [f"The {green}ORC WARLORD{white} hurls a {grey}boulder{white} at you!",
                         f"The {green}ORC WARLORD{white} slashes the {darkgrey}DARK-CLAYMORE{white} at you!",
