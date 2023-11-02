@@ -145,7 +145,7 @@ if True:
 
     title = True
 
-    known_spells = ["firebolt", "magic missile", "shield of the magi", "tornado burst"]
+    known_spells = ["firebolt", "magic missile", "shield of the magi"]
     current_spells = known_spells.copy()
 
     triggers = []
@@ -173,6 +173,7 @@ if True:
         "echo blast": 2,
         "silence waves": 3,
         'dirtify': 2,
+        "acid": 3,
     }
 
     effects_stack = {
@@ -193,7 +194,8 @@ if True:
         "lightning": 1,
         "echo blast": 5,
         "silence waves": 3,
-        "dirtify": 3
+        "dirtify": 3,
+        "acid": 2
     }
 
     areas_to_names = {
@@ -213,7 +215,11 @@ if True:
     areas_to_fr = {
         "white bridge": "white bridge",
         "sunken graveyard": "sunken graveyard",
-        "frosted cave": "frosted cave"
+        "frosted cave": "frosted cave",
+        "goliaths burrow": "goliaths burrow",
+        "core-sail arena": "core-sail arena",
+        "dead lake": "dead lake",
+        "monk cliffs": "monk cliffs"
     }
 
     lvl = 1
@@ -237,7 +243,7 @@ if True:
 
     testing = False
 
-    multimove = ["the stranger", "orc warlord", "bandit", "yeti", "bandit lord", "jade guardian", "jade knight", "drowned monstrosity", "the dreadwood", "forest horror", "lich", "gelatinous cube", "the dark dragon", "death knight", "necromancer", "guardian of the jungle", "spike gang leader", "frost giant", 'assasin']
+    multimove = ["the stranger", "orc warlord", "bandit", "yeti", "bandit lord", "jade guardian", "jade knight", "drowned monstrosity", "the dreadwood", "forest horror", "lich", "gelatinous cube", "the dark dragon", "death knight", "necromancer", "guardian of the jungle", "spike gang leader", "frost giant", 'assasin', "merrow", "monk lvl [1]", "monk lvl [2]", "monk lvl [3]", "monk lvl [4]", "muck the mutant", "zanders the pirate", "the rock giant", "blade of the north", "other worlder"]
     bosses = ["the stranger", "orc warlord", "yeti", "bandit lord", "jade guardian", "the dreadwood", "the dark dragon", "necromancer", "guardian of the jungle"]
     enemies_weapon_weakness = {
         "fungi monster": ["rusty sword", 10],
@@ -251,7 +257,8 @@ if True:
         "cursed axe": 4,
         "cursed dagger": 1,
         "cursed bow": 6,
-        "explosive bow": 20
+        "explosive bow": 20,
+        "jade harpoon": 3,
     }
     blessed_weapons = {
         "magic sword": 2,
@@ -672,7 +679,7 @@ if True:
         global effects
         if effect_a < 0:
             try:
-                effects[effect_n] = [effects[effect_n][0] + effect_a , effects[effect_n][1]]
+                effects[effect_n] = [effect_a, effects[effect_n][1]]
             except:
                 effects[effect_n] = [effect_a, effect_l]
         else:
@@ -955,6 +962,10 @@ if True:
 
                 commands.append('equip')
 
+            if item_stats["weapon"] is True:
+                commands.append("scrap")
+                scrollTxt(f' |{red}Scr{darkgrey}ap{white}|', end='', flush=True)
+
             if item == offhand or item == weapon:
                 scrollTxt(f' |{teal}Unequip{white}|', end='', flush=True)
 
@@ -1143,6 +1154,13 @@ if True:
                     except:
                         effects['hit bonus'] = [3, 3]
 
+                if item == 'potion of rage':
+                    scrollTxt(f"You pour the {gold}fizzy{white} {red}red liquid{white} down your throat. You feel immensely {orange}ANGRY{white} it would be {darkgrey}dangerous{white} for anyone to get in your way...")
+                    scrollTxt(f"+ {red}10{white} Damage | Lasts {blue}2{white} Battles")
+                    scrollTxt(f"- {yellow}2{white} Accuarcy{white} | Lasts {blue}2{white} Battles")
+                    effects_add(10, 2, "damage bonus")
+                    effects_add(-2, 2, "hit bonus")
+
                 if item == 'tortoise potion':
                     scrollTxt(
                         f"You swallow the {darkgrey}iron grey liquid{white}. It tastse like {green}tortoise{white}?")
@@ -1225,7 +1243,6 @@ if True:
                         if health < 1:
                             scrollTxt(f"You {red}died{white}")
                             die()
-
 
                 if item == 'flaming dragon drink':
                     scrollTxt(
@@ -1880,6 +1897,22 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
                 if item in durability_weapon:
                     durability_weapon.pop(item)
+            
+            if answer == "scrap":
+                scra = max(math.floor(items_all[item]["selling price"]/10), 1)
+                print(f"+ {blue}{scra}{white} {darkgrey}metal scrap{white}")
+                print(f"- {red}{item}{white}")
+                inv.remove(item)
+                if item == offhand:
+                    offhand = 'none'
+                if item == weapon:
+                    weapon = "none"
+
+                if item in durability_weapon:
+                    durability_weapon.pop(item)
+                for h in (1, scra):
+                    inv.append("metal scrap")
+                if scra == 1: inv.remove("metal scrap")
 
             if answer == "infuse":
                 ww = []
@@ -1929,6 +1962,9 @@ Remember to always have backup {blue}claymores{white} or other weapons
                     if item == "dragon scale": power_bonus = f"{paleyellow}dragon scale"
                     if item == "skull": power_bonus = f"{silver}skull"
                     if item == "mutant jaguar tooth": power_bonus = f"{red}jaguar tooth"
+                    if item == "ogre nail": power_bonus = f"{yellow}ogre{darkgrey} nail"
+                    if item == "acid goo": power_bonus = f"{lime}infected{white}"
+                    if item == "rock core": power_bonus = f"{darkgrey}rocky{white}"
                     print(f"Your {darkgrey}{answer}{white} is now a {power_bonus}{white} {darkgrey}{answer}{white}")
                     
 
@@ -1942,6 +1978,9 @@ Remember to always have backup {blue}claymores{white} or other weapons
                     if item == "dragon scale": power_bonus = item
                     if item == "mutant jaguar tooth": power_bonus = f"jaguar tooth"
                     if item == "skull": power_bonus = item
+                    if item == "ogre nail": power_bonus = item
+                    if item == "acid goo": power_bonus = "infected"
+                    if item == "rock core": power_bonus = "rocky"
 
                     wname = power_bonus + " " + answer
 
@@ -1965,13 +2004,32 @@ Remember to always have backup {blue}claymores{white} or other weapons
                             except:
                                 wstats["special"] = [wstats["special"], "poison"]
                                 wstats['special text'] = [wstats["special text"], f"Ugly {green}green{white} blood {lime}oozes{white} out of their {red}wound{white}"]
-
+                    if item == "acid goo":
+                        if wstats["special"] is False:
+                            wstats['special'] = "acid"
+                            wstats['special text'] = f"{lime}Radoactive{white} goo covered the {red}enemy{white} causing a {orange}deadly burn{white}."
+                        else:
+                            try:
+                                wstats['special'].append("acid")
+                                wstats['special text'].append(f"{lime}Radoactive{white} goo covered the {red}enemy{white} causing a {orange}deadly burn{white}.")
+                            except:
+                                wstats["special"] = [wstats["special"], "acid"]
+                                wstats['special text'] = [wstats["special text"], f"{lime}Radoactive{white} goo covered the {red}enemy{white} causing a {orange}deadly burn{white}."]
                     if item == "goblin horn":
                         wstats["hit"] += 1
                         scrollTxt(f"+ {green}1{white} accuracy")
                     if item == "orc tooth":
                         wstats["damage"] += 1
                         scrollTxt(f"+ {red}1{white} damage")
+                    if item == "ogre nail":
+                        wstats["damage"] += 3
+                        scrollTxt(f"This {darkgrey}weapon{white} is {blue}two-handed{white}")
+                        wstats["two handed"] = True
+                        offhand = "none"
+                        scrollTxt(f"+ {red}3{white} damage")
+                    if item == "rock core":
+                        scrollTxt(f"+ {darkgrey}4{white} Defense | When Equiping this {red}Weapon{white}")
+                        if "cross-saber" not in wname: defense_weapons[wname] = 4
                     if item == "mutant jaguar tooth":
                         strength_weapons[wname] = 2
 
@@ -2114,10 +2172,6 @@ Remember to always have backup {blue}claymores{white} or other weapons
                         else:
                             scrollTxt(f"Your {darkgrey}weapon{white} cannot be {green}shrunken{white}.")
 
-                            
-
-                    
-
         if answer != "exit":
             enter()
 
@@ -2233,16 +2287,22 @@ Remember to always have backup {blue}claymores{white} or other weapons
             effects_applied.append("damage bonus")
             effects['damage bonus'][1] -= 1
             metadam_bonus = effects['damage bonus'][0]
+            if effects['damage bonus'][1] == 0:
+                effects.pop("damage bonus")
 
         if "hit bonus" in effects:
             effects_applied.append("hit bonus")
             effects['hit bonus'][1] -= 1
             metahi_bonus = effects['hit bonus'][0]
+            if effects['hit bonus'][1] == 0:
+                effects.pop("hit bonus")
 
         if "defense bonus" in effects:
             effects_applied.append("defense bonus")
             effects["defense bonus"][1] -= 1
             metade_bonus = effects["defense bonus"][0]
+            if effects['defense bonus'][1] == 0:
+                effects.pop("defense bonus")
 
         if weapon in defense_weapons:
             metade_bonus += defense_weapons[weapon]
@@ -2252,6 +2312,8 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
             effects['luck'][1] -= 1
             luck_amount = effects["luck"][0]
+            if effects['luck'][1] == 0:
+                effects.pop("luck")
 
         if weapon in luck_weapons:
             luck_amount += luck_weapons[weapon]
@@ -2383,23 +2445,30 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
                                 if ix[1] == "silence waves":
                                     scrollTxt(f"You {turquoise}silence{silver} effect{white} | -{red}3{white} ❤️, -{orange}1{white} str")
-                                    effects_add(-1, 1, "damage bonus")
+                                    effects_add(-1, 0, "damage bonus")
                                     health -= 3
+                                
                                 if ix[1] == "echo blast":
                                     scrollTxt(f"You {teal}echo{darkgrey} effect{white} | -{red}5{white} ❤️, -{orange}1{white} dex")
-                                    effects_add(-1, 1, "dex bonus")
+                                    effects_add(-1, 0, "dex bonus")
                                     health -= 5
+                                
                                 if ix[1] == "drain":
                                     scrollTxt(f"You {grey}weaken{white} | -{red}1{white} str")
-                                    effects_add(-1, 1, "damage bonus")
+                                    effects_add(-1, 0, "damage bonus")
 
                                 if ix[1] == "freeze":
                                     scrollTxt(f"You {teal}freeze{white} | -{red}1{white} defense")
-                                    effects_add(-1, 1, "defense bonus")
+                                    effects_add(-1, 0, "defense bonus")
+
+                                if ix[1] == "acid":
+                                    scrollTxt(f"You {lime}acid{white}{orange} burn{white} | - {red}2{white} ❤️, -{red}1{white} defense")
+                                    effects_add(-1, 0, "defense bonus")
+                                    health -= 2
                                 
                                 if ix[1] == "confusion":
                                     scrollTxt(f"You are {yellow}confused{white} | -{red}1{white} dex")
-                                    effects_add(-1, 1, "dex bonus")
+                                    effects_add(-1, 0, "dex bonus")
 
                                 if ix[1] == "shock" and random.randint(1, 3) == 1:
                                     scrollTxt(f"{yellow}SHOCK{white} | You drop your {darkgrey}weapon{white}")
@@ -2596,6 +2665,7 @@ Remember to always have backup {blue}claymores{white} or other weapons
                             hit = min(int(
                                 nat_hit + hit_bonus +
                                 lklk - handed), 20)
+                            
 
                             if fighter_class != "barbarian":
                                 mmHit = hit
@@ -2651,6 +2721,7 @@ Remember to always have backup {blue}claymores{white} or other weapons
                                 pass
 
                             if hit > x6:
+                                
 
                                 if sweep_attk == False:
                                     enemies[tname]['health'] -= damage
@@ -2884,12 +2955,12 @@ Remember to always have backup {blue}claymores{white} or other weapons
                                 if weapon in steal_weapons:
                                     print()
                                     try:
-                                        op = enemies_all[tname]["gold"]
+                                        op = enemies[tname]["gold"]
                                         scrollTxt(f"You steal {gold}{int((op)/steal_weapons[weapon])}{white} gp from {copper}{tname}{white}")
                                         gp += int((op)/steal_weapons[weapon])
                                     except:
                                         tname = random.choice(list(enemies.keys()))
-                                        op = enemies_all[tname]["gold"]
+                                        op = enemies[tname]["gold"]
                                         scrollTxt(f"You steal {gold}{int((op)/steal_weapons[weapon])}{white} gp from {copper}{tname}{white}")
                                         gp += int((op)/steal_weapons[weapon])
 
@@ -3075,7 +3146,7 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
                                 hurt.append([tname, "life steal", 5])
 
-                            if chosen_spell == "dark chromatic orb":
+                            if chosen_spell == "dark arrows":
                                 hit = min(int(
                                     random.randint(5, 20) + hit_bonus - handed), 20)
 
@@ -3334,12 +3405,10 @@ Remember to always have backup {blue}claymores{white} or other weapons
                         reactions = special_moves
 
                     for i in reactions:
-                        if i != "undefined":
+                        if i != "prep weapon" or i == "prep weapon" and weapon in weapons_reload:
                             scrollTxt(f"|{grey}{i}{white}|", end=" ", flush=True)
-                        else:
-                            d_chance = 0
-                            scrollTxt(f"|{grey}{i}{white} [{green}{d_chance}{white}]|", end=" ", flush=True)
-                        ranswer.append(i)
+
+                            ranswer.append(i)
                     scrollTxt()
 
                     answer = get_input(ranswer, True)
@@ -3348,6 +3417,48 @@ Remember to always have backup {blue}claymores{white} or other weapons
                     if answer == 'block':
                         blocking.append([offhand, shield_all[offhand]["block"], 1])
                         scrollTxt(f"You raise your {copper}{offhand}{white} and get ready to block")
+
+                    if answer == "prep weapon":
+                        print()
+                        if "bow" in weapon: 
+                            rm = "reload"
+                            ra = "ed"
+                        else: 
+                            rm = "prepare"
+                            ra = "d"
+                        
+                        scrollTxt(f"You {orange}{rm}{white} your {darkgrey}{weapon}{white} for {blue}use{white}")
+
+                        weapons_reload[weapon] -= 1
+                        if weapons_reload[weapon] <= 0:
+                            weapons_reload.pop(weapon)
+                            scrollTxt(f"Your {darkgrey}{weapon}{white} is fully {turquoise}{rm}{ra}{white}!")
+                        else:
+                            scrollTxt(f"Your {darkgrey}{weapon}{white} still needs to be {turquoise}{rm}{ra}{white} for {red}{weapons_reload[weapon]}{white} more turns")
+
+                    if answer == "use item":
+                        inventory()
+                        try:
+                            if "damage bonus" not in effects_applied and effects["damage bonus"] < 1:
+                                effects_applied.append("damage bonus")
+                                if "damage bonus" in effects:
+                                    effects['damage bonus'][1] -= 1
+                                    metadam_bonus = effects['damage bonus'][0]
+                            
+                            if "hit bonus" not in effects_applied and effects["hit bonus"] < 1:
+                                effects_applied.append("hit bonus")
+                                if "hit bonus" in effects:
+                                    effects['hit bonus'][1] -= 1
+                                    metahi_bonus = effects['hit bonus'][0]
+
+                            if "defense bonus" not in effects_applied and effects["defense bonus"] < 1:
+                                
+                                if "defense bonus" in effects:
+                                    effects_applied.append("defense bonus")
+                                    effects["defense bonus"][1] -= 1
+                                    metade_bonus = effects["defense bonus"][0] 
+                        except:
+                            pass 
 
                     if answer == "shield bash":
                         scrollTxt_enemies = ""
@@ -3470,6 +3581,11 @@ Remember to always have backup {blue}claymores{white} or other weapons
                         print(f"+{teal}3{white} Damage, -{red}1{white} Dex")
                         metadam_bonus += 3
                         metahi_bonus -= 1
+
+                    if answer == "lucky dance":
+                        print(f"You do a little {blue}dance{white} and sing a {gold}lucky song{white}")
+                        print(f"+{gold}2{white} Luck")
+                        luck_amount += 2
                         
                     if answer == "jellify":
                         print(f"You {purple}cast{white} a simple {blue}jellify{white} spell")
@@ -3541,12 +3657,89 @@ Remember to always have backup {blue}claymores{white} or other weapons
                         hurt.append([tname, "bleed", 2])
                         hurt.append([tname, "bleed", 2])
 
+                    if answer == "cursed drain":
+                        scrollTxt_enemies = ""
+
+                        keys_of_e = []
+
+                        for i in enemies:
+                            keys_of_e.append(i)
+
+                        for i in enemies:
+                            scrollTxt_enemies = scrollTxt_enemies + f"|{lime}{i}{white}| "
+
+                        if len(enemies.keys()) != 1:
+
+                            scrollTxt(f"Who would you like to {red}curse{white}?")
+
+                            scrollTxt(scrollTxt_enemies)
+
+                            answer = get_input(keys_of_e, True)
+                            scrollTxt()
+
+                            target = enemies[answer]
+                            tname = answer
+                        else:
+                            target = enemies[keys_of_e[0]]
+                            tname = keys_of_e[0]
+
+                        scrollTxt(f"You inflict {purple}DRA{darkgrey}IN{white} on {copper}{tname}{white}")
+                        hurt.append([tname, "drain", 2])
+                        hurt.append([tname, "drain", 2])
+                        hurt.append([tname, "drain", 2])
+
+                    if answer == "exp drain":
+                        scrollTxt_enemies = ""
+
+                        keys_of_e = []
+
+                        for i in enemies:
+                            keys_of_e.append(i)
+
+                        for i in enemies:
+                            scrollTxt_enemies = scrollTxt_enemies + f"|{lime}{i}{white}| "
+
+                        if len(enemies.keys()) != 1:
+
+                            scrollTxt(f"Who would you like to {turquoise}drain{white}?")
+
+                            scrollTxt(scrollTxt_enemies)
+
+                            answer = get_input(keys_of_e, True)
+                            scrollTxt()
+
+                            target = enemies[answer]
+                            tname = answer
+                        else:
+                            target = enemies[keys_of_e[0]]
+                            tname = keys_of_e[0]
+
+                        xp_gain_am = int(enemies[tname]["exp"] / 3)
+                        scrollTxt(f"You steal {turquoise}{xp_gain_am}{white} XP from {copper}{tname}{white}.")
+                        exp += xp_gain_am
+                        if exp >= exp_max:
+                            print()
+                            scrollTxt("_____________________")
+                            scrollTxt("|                   |")
+                            scrollTxt(f"| You {blue}LEVELED UP!{white}   |")
+                            scrollTxt(f"| + {red}5{white} Max HP        |")
+                            scrollTxt(f"| + {turquoise}Level Crystal{white} 🔷|")
+                            scrollTxt("|___________________|")
+
+                            lvl += 1
+                            crystals += 1
+                            max_health += 5
+
+                            exp -= exp_max
+                            exp_max = int(exp_max * 1.5)
+                            scrollTxt()
+
                     real_weapon = weapon
                     weapon = offhand
                     attack_or_fast(answer, damage_bonus, hit_bonus)
                     weapon = real_weapon
                     
-                    if answer != 'attack' and answer != "fast attack": enter()
+                    if answer != 'attack' and answer != "fast attack" and answer != "use item": enter()
 
                     turn = "enemies"
                 else:
@@ -3667,8 +3860,14 @@ Remember to always have backup {blue}claymores{white} or other weapons
                                     enemies[i]["armor"] -= 1
 
                                 if ix[1] == "dirtify":
-                                    scrollTxt(f"Turned to {brown}Dirt{white} | -{red}2{white} Defense")
+                                    scrollTxt(f"{brown}Dirt{white} Effect | -{red}2{white} Defense")
                                     enemies[i]["armor"] -= 2
+
+                                if ix[1] == "acid":
+                                    scrollTxt(f"{lime}Acid{white} Effect | -2 ❤️, -{red}1{white} Defense")
+                                    enemies[i]["armor"] -= 1
+                                    ehealth -= 2
+                                    enemies[i]["health"] -= 2
 
                                 if ix[1] == "lightning":
                                     scrollTxt(f"{yellow}LIGHTNING{white} Effect | -{red}1{white} defense : -{red}1{white} damage : -{green}1{white} accuracy")
@@ -3786,13 +3985,14 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
                             if enemies[i]['damage'][attack] == "heal":
                                 scrollTxt("{}".format(enemies[i]["attack"][attack]))
-                                hpl = random.randint(2, max(int(enemies_all[i]['health'] / 3), 3))
+                                hpl = random.randint(max(int(enemies_all[i]['health'] / 15), 2), max(int(enemies_all[i]['health'] / 3), 3))
                                 scrollTxt(f"{copper}{i}{white} heals {red}{hpl}{white} HP")
                                 enemies[i]['health'] += hpl
                             elif enemies[i]['damage'][attack] == "dam buff":
                                 scrollTxt("{}".format(enemies[i]["attack"][attack]))
-                                enemies[i]["str"] += 3
-                                scrollTxt(f"{copper}{i}{white} gets {red}{3}{white} STRONGER")
+                                enemies[i]["str"] += int(enemies[i]["str"] / 1.5)
+                                rand_var = int(enemies[i]["str"] / 1.5)
+                                scrollTxt(f"{copper}{i}{white} gets {red}{rand_var}{white} STRONGER")
                             elif enemies[i]['damage'][attack] == "steal":
                                 scrollTxt("{}".format(enemies[i]["attack"][attack]))
                                 gpl = min(random.randint(int((enemies[i]["exp"]/10)), int((enemies[i]["exp"]/10) + 5)), gp)
@@ -4088,7 +4288,8 @@ Remember to always have backup {blue}claymores{white} or other weapons
                             exp += ee
 
                         gp += ge
-                        
+
+                       
 
                         if exp >= exp_max:
                             scrollTxt("_____________________")
@@ -4227,10 +4428,12 @@ Remember to always have backup {blue}claymores{white} or other weapons
 
             for x in effects:
                 #input(x)
+                #input(effects[x])
                 if effects[x][1] >= 1:
                     neffects[x] = effects[x]
 
             effects = neffects
+            #input(effects)
 
 
     def playaudio(filename):
@@ -4621,7 +4824,7 @@ Remember to always have backup {blue}claymores{white} or other weapons
         if dice_guess == dice:
             print(f"+ {gold}{how_much * 2}{white} 🔶")
             gp += how_much * 2
-        elif dice_guess in range(dice - 1, dice + 1):
+        elif dice_guess in range(dice - 1, dice + 2):
             print(f"+ {gold}{int(how_much / 2)}{white} 🔶")
             gp += int(how_much  / 2)
         else:
@@ -4880,6 +5083,27 @@ Remember to always have backup {blue}claymores{white} or other weapons
  ██|{turquoise}██{white}|██|██
     ██|██
     ██""")
+        if location == "monk cliffs":
+            scrollTxt(f"""    ██
+    ██|██
+    ██       {blue}World Map{white}
+ {turquoise}██{white}|██|██|██
+    ██|██
+    ██""")
+        if location == "goliaths burrow":
+            scrollTxt(f"""    ██
+    ██|██
+    ██       {blue}World Map{white}
+ ██|██|██|██
+    {turquoise}██{white}|██
+    ██""")
+        if location == "core-sail arena":
+            scrollTxt(f"""    ██
+    ██|██
+    ██       {blue}World Map{white}
+ ██|██|██|██
+    ██|██
+    {turquoise}██{white}""")
         if location == "sunken graveyard":
             scrollTxt(f"""    ██
     ██|██
@@ -4891,6 +5115,13 @@ Remember to always have backup {blue}claymores{white} or other weapons
             scrollTxt(f"""    ██
     ██|██
     {turquoise}██{white}       {blue}World Map{white}
+ ██|██|██|██
+    ██|██
+    ██""")
+        if location == "dead lake":
+            scrollTxt(f"""    ██
+    {turquoise}██{turquoise}|██
+    ██      {blue}World Map{white}
  ██|██|██|██
     ██|██
     ██""")
@@ -4949,17 +5180,18 @@ Remember to always have backup {blue}claymores{white} or other weapons
         istats['name'] = wname
         istats['description'] = istats[
                                     'description'] + f"\n{purple}Enchanted{white} with {bonus}. Named {darkgrey}{wname}{white}."
-        istats['selling price'] += 10
+        istats['selling price'] += 20
         items_all[wname] = istats
 
         if "Attack up" in bonus:
-            wstats["damage"] += 2
+            wstats["damage"] += 3
         if "Sweep Range" in bonus:
-            wstats['sweep'] += 0.3
+            wstats['sweep'] += 0.5
         if "Accuracy Up" in bonus:
-            wstats["hit"] += 2
+            wstats["hit"] += 3
         if "Combo Hit" in bonus:
             wstats['speed'] = max(1, wstats['speed'] - 1)
+            if wstats['speed'] > 15: wstats["speed"] = 15
         if "Durability Up" in bonus:
             wstats["durability"] += 10
             
@@ -5080,6 +5312,8 @@ Remember to always have backup {blue}claymores{white} or other weapons
             "lightning": 15,
             "hyper bleed": 8,
             "hyper freeze": 8,
+            "dirtify": 9,
+            "acid": 10
         }
         ws = int(((((x["damage"]/(1))) * (5 - (x['reload'] * 1.4) + (x["hit"] / 2))) + (x["hit"]) + min(15, (x["durability"]/2)) + max(0, (20 - (x["speed"] * 1.5))) + (x["damage"] * x["sweep"])))
         if x["special"] != False: 
@@ -7384,99 +7618,21 @@ What am I, in {purple}shadows{white} I creep?
                 rtriggers = []
 
 
+    def manage_inv():
+        global inv
+        inv_sort = {}
+        for x in inv:
+            if x not in inv_sort:
+                inv_sort[x] = 1
+            else:
+                inv_sort[x] += 1
+        inv = []
+
+        for x in inv_sort:
+            for i in range(1, inv_sort[x] + 1): inv.append(x)
+
         
     if False: input(str(100 - (100 / ( (20 + int(input("Enemy Dex: ")) - int(input("Dodge Amount: ")) ) / (20 + int(input("Enemy Dex: ")) - int(input("Dodge Amount: ")) - (int(input("Block Ability: ")) + int(input("Dodge amout: ")) - int(input("Enemy Dex: ")) ) )))))
-
-    if False:
-        best_to_worst = []
-        dict_btw = {}
-        for x in weapons_all:
-            #print()
-            answer = x
-            #print()
-            #print(f"{blue}{x}{white}")
-            z = items_all[answer]["description"]
-            x = weapons_all[answer]
-            y = {
-                "bleed": 17,
-                "poison": 18,
-                "burn": 20,
-                "shock": 25,
-                "drain": 18,
-                "freeze": 18,
-                "life steal": 21,
-                "dragon burn": 23,
-                "crunch": 18,
-                "hyper freeze": 23
-            }
-            ws = int(((((x["damage"]/(1))) * (5 - (x['reload'] * 1.4) + (x["hit"] / 2))) + (x["hit"]) + min(15, (x["durability"]/2)) + max(0, (20 - (x["speed"] * 1.5))) + (x["damage"] * x["sweep"])))
-            if x["special"] != False: 
-                if type(x["special"]) == type(["this", "is", 'a', "list"]):
-                        for sp in x["special"]:
-                            ws += y[sp] - 12
-                else:
-                    ws += y[x["special"]] - 12
-            if "crit" in x: ws += int(x["damage"] * (x["crit"] / 10))
-
-            #scrollTxt(f"{italic}{z}{normal}{white}")
-            #print()
-            #scrollTxt(f"{turquoise}Weapon{white} {darkgrey}Score{white}: {teal}{ws}{white}")
-            #print()
-            d = x["damage"]
-            h = x["hit"]
-            r = x['reload']
-
-            #scrollTxt(f"Damage: {orange}{d}{white}")
-            #scrollTxt(f"Hit: {blue}{h}{white}")
-            #scrollTxt(f"Reload time: {green}{r}{white} turns")
-            dict_btw[answer] = ws
-            best_to_worst.append(ws)
-
-
-        sorted_dict = sorted(dict_btw.items(), key=lambda x:x[1])
-        dict_btw = dict(sorted_dict)
-        for asdf in dict_btw:
-            print()
-            answer = asdf
-            print()
-            print(f"{blue}{answer}{white}")
-            z = items_all[answer]["description"]
-            x = weapons_all[answer]
-            y = {
-                "bleed": 17,
-                "poison": 18,
-                "burn": 20,
-                "shock": 25,
-                "drain": 18,
-                "freeze": 18,
-                "life steal": 21,
-                "dragon burn": 23,
-                "crunch": 18,
-                "hyper freeze": 23
-            }
-            ws = int(((((x["damage"]/(1))) * (5 - (x['reload'] * 1.4) + (x["hit"] / 2))) + (x["hit"]) + min(15, (x["durability"]/2)) + max(0, (20 - (x["speed"] * 1.5))) + (x["damage"] * x["sweep"])))
-            if x["special"] != False: 
-                if type(x["special"]) == type(["this", "is", 'a', "list"]):
-                        for sp in x["special"]:
-                            ws += y[sp] - 12
-                else:
-                    ws += y[x["special"]] - 12
-            if "crit" in x: ws += int(x["damage"] * (x["crit"] / 10))
-
-            scrollTxt(f"{italic}{z}{normal}{white}")
-            print()
-            scrollTxt(f"{turquoise}Weapon{white} {darkgrey}Score{white}: {teal}{ws}{white}")
-            print()
-            d = x["damage"]
-            h = x["hit"]
-            r = x['reload']
-
-            scrollTxt(f"Damage: {orange}{d}{white}")
-            scrollTxt(f"Hit: {blue}{h}{white}")
-            scrollTxt(f"Reload time: {green}{r}{white} turns")
-        enter()
-
-
     if False:
         input(f"Items: {len(items_all)}")
         input(f"Weapons: {len(weapons_all)}")
@@ -7503,6 +7659,9 @@ What am I, in {purple}shadows{white} I creep?
         if answer == "yes":
             clear()
             load_data()
+            
+            
+        
             scrollTxt(f"Loading {turquoise}Save{white}...")
             time.sleep(1)
             scrollTxt(f"{green}>>Save Loaded<<{white}")
@@ -7714,12 +7873,13 @@ What am I, in {purple}shadows{white} I creep?
             strength = 5
             dexterity = 5
 
-            max_health = 40
+            max_health = 25
             health = max_health
 
             gp = 0
 
             known_spells = []
+            #crystals = 10
 
             inv = ['health potion', 'ember potion']
 
@@ -7751,6 +7911,10 @@ What am I, in {purple}shadows{white} I creep?
                 print()
                 scrollTxt(f"You got {darkgrey}note-it-downs saber{white}!")
                 inv.append("note-it-downs saber")
+            if os.environ['REPL_OWNER'] == "OverdriveReplit":
+                print()
+                scrollTxt(f"You got {darkgrey}note-it-downs saber{white}!")
+                inv.append("lightning spear")
 
             if os.environ['REPL_OWNER'] == "chromebot":
                 print()
@@ -7857,6 +8021,14 @@ What am I, in {purple}shadows{white} I creep?
         save()
     
     while True:
+        manage_inv()
+                
+        if "power guantlets" in inv:
+            inv.remove("power guantlets")
+            inv.append("power gauntlets")
+        if "flame blade" in inv:
+            inv.remove("flame blade")
+            inv.append("flameblade")
         if "platnium" in inv:
             inv.remove("platnium shield")
             inv.append("platinum shield")
@@ -7866,6 +8038,27 @@ What am I, in {purple}shadows{white} I creep?
 
         weapons_all["power gauntlets"]["damage"] = strength
         weapons_all["power gauntlets"]["hit"] = dexterity
+        enemies_all["you"]["health"] = max_health
+        try:
+            enemies_all["you"]["damage"] = int(weapons_all[weapon]["damage"] * 1.2)
+        except:
+            enemies_all["you"]["damage"] = strength
+        try:
+            enemies_all["you"]["dex"]= dexterity + weapons_all[weapon]["hit"]
+        except:
+            enemies_all["you"]["dex"] = dexterity
+        enemies_all["you"]["str"] = strength
+        enemies_all["you"]["gold"] = gp
+        try:
+            enemies_all["you"]["armor"] = int(shield_all[offhand]["guard"] * 1.2)
+        except:
+            enemies_all["you"]["armor"] = min(dexterity*2, 12)
+        enemies_all["you"]["exp"] = exp_max
+        try:
+            if weapons_all[weapon]["special"] != False and type([1, 2,3]) != (weapons_all[weapon]["special"]): enemies_all['you']["elemental"] = weapons_all[weapon]["special"]
+            if enemies_all['you']["elemental"] in ["hyper bleed", "hyper freeze", "dragon burn", "crunch", "lightning"]: enemies_all['you']["elemental"] = "none"
+        except:
+            pass
         #input(items_all)
         clear()
         if settings["auto saving"]: save()
@@ -8678,24 +8871,40 @@ What am I, in {purple}shadows{white} I creep?
                     cost_w = 20
                     for i in triggers:
                         if i == "forged weapon":
-                            cost_w += 10
+                            cost_w *= 1.4
                     for i in inv:
                         for x in items_all[i]["description"].split():
                             if "Enchanted" in x:
-                                cost_w += 30
+                                cost_w *= 1.7
+
+                    cost_w = int(cost_w)
                             
-                    crollTxt('You walk up to the nearest weapon forgery.')
-                    crollTxt(f'"That will be {cost_w} gold " says the smith')
+                    scrollTxt(f'You walk up to the nearest {darkgrey}weapon{orange} forgery{white}.')
+                    scrollTxt(f'"That will be {gold}{cost_w}{white} gold and {darkgrey}{int(cost_w/20)}{white} metal scraps" says the {red}smith{white}')
                     yn = get_input(["yes", "no"])
 
                     if yn == "yes":
-                        if gp >= cost_w:
+                        am_of_scraps = 0
+                        for itm in inv:
+                            if itm == "metal scrap": am_of_scraps += 1
+                        if gp >= cost_w and am_of_scraps >= int(cost_w/20):
                             gp -= cost_w
-                            crollTxt(f"-{cost_w} gold")
+                            scrollTxt(f"-{gold}{cost_w}{white} gold")
+                            scrollTxt(f"- {darkgrey}{ int(cost_w/20)}{white} metal scraps")
+                            removeinv = []
+                            am_of_scraps = int(cost_w/20)
+                            for itm in inv:
+                                if itm == "metal scrap" and am_of_scraps > 0:
+                                    am_of_scraps -= 1
+                                    removeinv.append("metal scrap")
+
+                            for itm in removeinv:
+                                inv.remove(itm)
+                            scrollTxt(f"")
                             print()
                             forge_weapon()
                         else:
-                            crollTxt("You don\'t have enough gold")
+                            scrollTxt(f"You don\'t have enough {red}items{white}")
                             enter()
 
                     else:
@@ -9667,6 +9876,8 @@ What am I, in {purple}shadows{white} I creep?
                     print()
                     scrollTxt(f"You continue along the {brown}path{white}...")
                     enter()
+        
+        
         elif world == "frozite":
             if location == "white bridge":
                 scrollTxt(f"~[{blue}WHITE BRIDGE{white}]~")
@@ -9678,7 +9889,7 @@ What am I, in {purple}shadows{white} I creep?
 
                 if settings["surroundings"]:
                     scrollTxt(
-                        f"{italic}Surrounding {blue}white bridge{white} is open {blue}ice tundura{white} to the {teal}north{white}, {teal}east{white}, and {teal}south{white}, a {purple}purple snowy mountain{white} to the {teal}south{white} and great {darkgrey}mountains{white} to the {teal}west{white}.{normal}{bold}")
+                        f"{italic}Surrounding {blue}white bridge{white} is open {blue}ice tundura{white} to the {teal}north{white}, {teal}east{white}, and {teal}south{white}, a {purple}burrow{white} to the {teal}south{white} and great {darkgrey}mountains{white} to the {teal}west{white}.{normal}{bold}")
                     scrollTxt("")
 
                 if "white bridge" not in triggers:
@@ -9953,25 +10164,27 @@ What am I, in {purple}shadows{white} I creep?
                     enter()
                     gp += 40
                     inv.append('hardy bread')
+                
                 elif answer == "leave":
-                    scrollTxt(f"{blue}Areas have not been added{white}")
-                    scrollTxt(f"You may only travel {blue}north{white} or {blue}east{white}")
-                    answer = get_input(["north", "east"])
+                    scrollTxt(f"You may travel {blue}north{white}, {blue}south{white}, {blue}west{white} or {blue}east{white}")
+                    answer = get_input(["north", "east", "south", "west"])
                     print()
                     scrollTxt(f"You travel {red}answer{white} for a couple {blue}hours{white}")
                     if answer == "north":
                         location = "frosted cave"
+                    if answer == "south": location = "goliaths burrow"
                     if answer == "east":
                         location = "sunken graveyard"
-                    
+                    if answer == "west": location = "monk cliffs"
                         
                     enter()
+            
             elif location == "frosted cave":
                 scrollTxt(f"~[{blue}FROSTED CAVE{white}]~")
                 scrollTxt("")
 
                 if settings['minimap']:
-                    minimap()
+                    minimap_frozite()
                     print("")
 
                 if settings["surroundings"]:
@@ -10093,16 +10306,112 @@ What am I, in {purple}shadows{white} I creep?
             
 
                 if answer == "leave":
-                    scrollTxt(f"{blue}Areas have not been added{white}")
-                    scrollTxt(f"You may only travel {blue}south{white}")
+                    scrollTxt(f"You may travel {blue}south{white} or {blue}north{white}")
+                    answer = get_input(["north", "south"])
+                    print()
+                    scrollTxt(f"You travel {red}answer{white} for a couple {blue}hours{white}")
+                    if answer == "north":
+                        location = "dead lake"
+                    if answer == "south": location = "white bridge"
+                    
+            elif location == "goliaths burrow":
+                scrollTxt(f"~[{blue}Goliaths Burrow{white}]~")
+                scrollTxt("")
+
+                if settings['minimap']:
+                    minimap_frozite()
+                    print("")
+
+                if settings["surroundings"]:
+                    scrollTxt(
+                        f"{italic}Surrounding the {blue}burrow{white} is {platinum}White bridge{white} to the {teal}north{white} a huge {darkgrey}colloseum{white} to the {teal}south{white}, a {red}plateau{white} to the {teal}east{white} and the {turquoise}ocean{white} to the {teal}west{white}.{normal}{bold}")
+                    scrollTxt("")
+
+                if "goliaths burrow" not in triggers:
+                    triggers.append("goliaths burrow")
+                    scrollTxt(
+                        f"{italic}You can make a out a {darkgrey}lonely goliath{white} huddling in the {teal}cold{white}, cluched in hand is a {red}healing stone{white} but he looks very {purple}hungery{white}.{normal}{bold}"
+                    )
+
+                elif settings["print out des"] is True:
+                    scrollTxt(
+                        f"{italic}You can make a out a {darkgrey}lonely goliath{white} huddling in the {teal}cold{white}, cluched in hand is a {red}healing stone{white} but he looks very {purple}hungery{white}.{normal}{bold}"
+                    )
+
+                scrollTxt(f"{turquoise}What would you like to do{white}?")
+                scrollTxt(f"> {purple}Inv{white} / {darkgrey}Stats{white} / {red}Settings{white} / {silver}Save{white} | {teal}Go toward goliath{white} / {platinum}Leave{white}")
+                answer = get_input(["inv", 'stats', 'settings', "save", "go towards goliath", 'leave'])
+                scrollTxt("")
+
+                usual_options(answer)
+
+                if answer == "go towards goliath":
+                    scrollTxt(f"You reach the {teal}go{darkgrey}liath{white}. He seems to take no {red}notice{white}")
+                    commands = ["leave"]
+                    if "hardy bread" in inv:
+                        commands.append('hardy bread')
+                        scrollTxt(f"[{brown}Give Hardy Bread{white}] ", end="", flush=True)
+                    if "mammoth meat" in inv:
+                        commands.append("mammoth meat")
+                        scrollTxt(f"[{red}Give Mammoth Meat{white}] ", end="", flush=True)
+                    if "lightning cider" in inv:
+                        commands.append("lightning cider")
+                        scrollTxt(f"[{yellow}Give Lightning Cider{white}]", end="", flush=True)
+                    if "mushroom soup" in inv:
+                        commands.append("mushroom soup")
+                        scrollTxt(f"[{copper}Give Mushroom soup{white}]", end="", flush=True)
+                    scrollTxt(f"[{blue}Leave{white}]")
+                    if commands == ["leave"]:
+                        scrollTxt(f"{italic}you need food{normal}{bold}")
+                    scrollTxt(f"What would you like to {blue}do{white}?")
+                    answer = get_input(commands)
+                    print()
+                    if answer != 'leave':
+                        inv.remove(answer)
+                        scrollTxt(f"You give the {darkgrey}goliath{white} a {copper}{answer}{white}")
+                        if answer == "hardy bread":
+                            print()
+                            scrollTxt(f"The {darkgrey}goliath{white} gobbles down the {brown}warm bread{white}")
+                            scrollTxt(f"He smiles {blue}gratefully{white} at you and gives his {red}healing stone{white}")
+                            scrollTxt(f"+ {red}healing stone{white}")
+                            inv.append("healing stone")
+                        elif answer == "mammoth meat":
+                            print()
+                            scrollTxt(f"The {darkgrey}goliath{white} gobbles down the {brown}hardy meat{white}")
+                            scrollTxt(f"He smiles {blue}gratefully{white} at you and gives his {red}healing stone{white}")
+                            scrollTxt(f"+ {red}healing stone{white}")
+                            inv.append("healing stone")
+                        elif answer == "mushroom soup":
+                            scrollTxt(f"The {darkgrey}goliath{white} slurps the {copper}mushroom soup{white}")
+                            scrollTxt(f"He then {red}spits{white} it out and {orange}roars{white}!")
+                            enter()
+                            combat(["goliath"])
+                        else:
+                            scrollTxt(f"The {darkgrey}goliath{white} slips the {gold}lightning cider{white}")
+                            scrollTxt(f"He jumps up as he is {red}struck{white} by a bolt of {yellow}lightning{white}!")
+                            scrollTxt(f"He {orange}roars{white} and charges at you!")
+                            enter()
+                            combat(["goliath"])
+                        enter()
+                    else:
+                        scrollTxt(f"You leave the {darkgrey}goliath{white}")
+                        enter()
+
+
+                if answer == "leave":
+                    scrollTxt(f"You may travel {blue}north{white} or {blue}south{white}")
+                    answer = get_input(["north", "south"])
+                    if answer == "north":
+                        location = "white bridge"
+                    if answer == "south": location = "core-sail arena"
                     enter()
-                    location = "white bridge"
+
             elif location == "sunken graveyard":
                 scrollTxt(f"~[{blue}SUNKEN GRAVEYARD{white}]~")
                 scrollTxt("")
 
                 if settings['minimap']:
-                    minimap()
+                    minimap_frozite()
                     print("")
 
                 if settings["surroundings"]:
@@ -10110,8 +10419,8 @@ What am I, in {purple}shadows{white} I creep?
                         f"{italic}Surrounding the {blue}sunken graveyard{white} is {platinum}White bridge{white} to the {teal}west{white} {darkgrey}mountains{white} to the {teal}east{white}, a {red}plateau{white} to the {teal}south{white} and the {turquoise}ocean{white} to the {teal}north{white}.{normal}{bold}")
                     scrollTxt("")
 
-                if "giants layer" not in triggers:
-                    triggers.append("giants layer")
+                if "sunken grave" not in triggers:
+                    triggers.append("sunken grave")
                     scrollTxt(
                         f"{italic}Suken into the {brown}ground{white} is a {darkgrey}lonely graveyard{white}. Graves 🪦 are {red}scattered{white} around. You can see 3 {turquoise}gh{teal}os{blue}ts{white}. {normal}{bold}"
                     )
@@ -10179,7 +10488,348 @@ What am I, in {purple}shadows{white} I creep?
                     scrollTxt(f"You may only travel {blue}west{white}")
                     enter()
                     location = "white bridge"
+            
+            elif location == "dead lake":
+                scrollTxt(f"~[{blue}DEAD LAKE{white}]~")
+                scrollTxt("")
+
+                if settings['minimap']:
+                    minimap_frozite()
+                    print("")
+
+                if settings["surroundings"]:
+                    scrollTxt(
+                        f"{italic}Surrounding the {blue}dead lake{white} is open {blue}ice tundura{white} to the {teal}south{white}, a {green}forest{white} to the {teal}north{white}, more {blue}lake{white} to the {teal}east{white} and the {turquoise}ocean{white} to the {teal}west{white}.{normal}{bold}")
+                    scrollTxt("")
+
+                if "dead lake" not in triggers:
+                    triggers.append("dead lake")
+                    scrollTxt(
+                        f"{italic}You on the {gold}beach{white} a {darkgrey}merchant{white} holding a {red}bubbling red{white} potion. The {darkgrey}merchant{white} also has a huge {purple}longbow{white} sticking out of a {silver}backpack{white}{normal}{bold}"
+                    )
+
+                elif settings["print out des"] is True:
+                    scrollTxt(
+                        f"{italic}You on the {gold}beach{white} a {darkgrey}merchant{white} holding a {red}bubbling red{white} potion. The {darkgrey}merchant{white} also has a huge {purple}longbow{white} sticking out of a {silver}backpack{white}{normal}{bold}"
+                    )
+
+                scrollTxt(f"{turquoise}What would you like to do{white}?")
+                scrollTxt(f"> {purple}Inv{white} / {darkgrey}Stats{white} / {red}Settings{white} / {silver}Save{white} | {teal}Merchant{white} / {platinum}Leave{white}")
+                answer = get_input(["inv", 'stats', 'settings', "save", "merchant", 'leave'])
+                scrollTxt("")
+
+                usual_options(answer)
+
+                if answer == "merchant":
+                    scrollTxt(f"As you travel across the {gold}beach{white} a {blue}Merr{darkgrey}ow{white} ({red}fish{white} humanoid) holding a {purple}Jade Harpoon{white} jumps out of the {blue}lake{white}!")
                     enter()
+
+                    combat(['merrow'])
+                    scrollTxt(f"Finally you reach the {darkgrey}merchant{white}")
+                    Shop(["potion of rage", "light shortsword", "cross-saber", "explosive bow"], [5, 40, 130, 220], f"{purple}Izle's{white} Intresting {darkgrey}Items{white}", sp = 20)
+
+
+                if answer == "leave":
+                    scrollTxt(f"{blue}Areas have not been added{white}")
+                    scrollTxt(f"You may only travel {blue}south{white}")
+                    enter()
+                    location = "frosted cave"
+
+            elif location == "monk cliffs":
+                scrollTxt(f"~[{blue}Monk Cliffs{white}]~")
+                scrollTxt("")
+
+                if settings['minimap']:
+                    minimap_frozite()
+                    print("")
+
+                if settings["surroundings"]:
+                    scrollTxt(
+                        f"{italic}Surrounding the {blue}monk cliffs{white} is {darkgrey}white bridge{white} to the {teal}east{white}, and the vast {turquoise}ocean{white} surrounding everywhere {teal}else{white}{normal}{bold}")
+                    scrollTxt("")
+
+                if "monk cliffs" not in triggers:
+                    triggers.append("monk cliffs")
+                    scrollTxt(
+                        f"{italic}Hidden high in the {darkgrey}mountians{white} lies a the {purple}sacred{white} temple of the {gold}monks{white}. Adorned with {red}red lanters{white} and {gold}gold tigers{white} this {darkgrey}temple{white} is kept {purple}safe{white} by over 100 {red}monks{white}{normal}{bold}"
+                    )
+
+                elif settings["print out des"] is True:
+                    scrollTxt(
+                        f"{italic}Hidden high in the {darkgrey}mountians{white} lies a the {purple}sacred{white} temple of the {gold}monks{white}. Adorned with {red}red lanters{white} and {gold}gold tigers{white} this {darkgrey}temple{white} is kept {purple}safe{white} by over 100 {red}monks{white}{normal}{bold}"
+                    )
+
+                scrollTxt(f"{turquoise}What would you like to do{white}?")
+                scrollTxt(f"> {purple}Inv{white} / {darkgrey}Stats{white} / {red}Settings{white} / {silver}Save{white} | {teal}Monks{white} / {platinum}Leave{white}")
+                answer = get_input(["inv", 'stats', 'settings', "save", "monks", 'leave'])
+                scrollTxt("")
+
+                usual_options(answer)
+
+                if answer == "monks":
+                    scrollTxt(f"You walk up to one of the {gold}monks{white}")
+                    scrollTxt(f"'{darkgrey}What have you come here to do?{white}' asks the {gold}Monk{white}")
+                    scrollTxt(f"What do you {purple}say{white}?")
+                    scrollTxt(f"[{blue}I have come to Learn{white}] [{red}I have come to Train{white}]")
+                    answer = get_input(["learn", "train"])
+                    print()
+
+                    if answer == "learn":
+                        scrollTxt(f"'{darkgrey}What will you learn?{white}', inquires the {gold}Monk{white}")
+                        while True:
+                            clear()
+                            cost = {
+                                "master archer": 1,
+                                "quick draw": 2,
+                                "cursed hand": 2,
+                                "exp drain": 3,
+                                "lucky dance": 3
+                            }
+                            print(f"You have {turquoise}{crystals}{white} Level Cystals")
+                            print(f"- {purple}Master{white} Archer -  [ {teal}1 level crystal{white} ]")
+                            print(f"- {turquoise}Quick{white} Draw    -  [ {teal}2 level crystal{white} ]")
+                            print(f"- {darkgrey}Cursed{white} Hand   -  [ {teal}2 level crystal{white} ]")
+                            print(f"- {blue}Exp{white} Drain     -  [ {teal}3 level crystal{white} ]")
+                            print(f"- {gold}Lucky{white} Dance   -  [ {teal}3 level crystal{white} ]")
+                            print(f"[{purple}l{white}] to leave")
+                            print()
+                            scrollTxt(f"What would {blue}you{white} like to learn?")
+                            answer = get_input(["master archer", "quick draw", "cursed hand", "exp drain", "lucky dance", "leave"])
+                            print()
+
+                            if answer == "leave":
+                                break
+                                
+
+                            else:
+                                
+
+                                if crystals >= cost[answer]:
+                                    crystals -= cost[answer]
+                                    if answer == "master archer":
+                                        scrollTxt(f"You learned how to {gold}prep weapon{white} for a {red}reaction turn{white}!")
+                                        special_moves.append("prep weapon")
+                                    if answer == "quick draw":
+                                        scrollTxt(f"You learned how to {gold}use item{white} for a {red}reaction turn{white}!")
+                                        special_moves.append("use item")
+                                    if answer == "cursed hand":
+                                        scrollTxt(f"You learned how to {gold}inflict drain{white} for a {red}reaction turn{white}!")
+                                        special_moves.append("cursed drain")
+                                    if answer == "exp drain":
+                                        scrollTxt(f"You learned how to {gold}drain exp{white} for a {red}reaction turn{white}!")
+                                        special_moves.append("exp drain")
+                                    if answer == "lucky dance":
+                                        scrollTxt(f"You learned how to {gold}dance?{white} for a {red}reaction turn{white}!")
+                                        special_moves.append("lucky dance")
+
+                                    enter()
+                                else:
+                                    scrollTxt(f"You don\'t have {red}enough{white}")
+                                    enter()
+                    if answer == "train":
+                        scrollTxt(f"How {red}difficult{white} would you like this to {blue}be{white}? [{gold}1{white}-{gold}4{white}]")
+                        answer = get_input(["1", "2", "3", "4"], g=True)
+                        diffi = answer
+                        print()
+                        scrollTxt(f"Let us {purple}fight{white}...")
+                        enter()
+                        combat(["monk lvl [" + answer + "]"])
+                        scrollTxt(f"'{darkgrey}You have done well{white}' says the {gold}Monk{white}")
+                        if diffi == "4" and "diff 4" not in triggers:
+                            triggers.append("diff 4")
+                            scrollTxt(f"'{darkgrey}You have beat me at my {red}highest level{darkgrey} take this {gold}Lightning Spear{white}' offers the {purple}Monk{white}")
+                            scrollTxt(f"+ {gold}Lightning Spear{white} [Legend Weapon]")
+                            inv.append("lightning spear")
+                        enter()
+
+                elif answer == "leave":
+                    scrollTxt(f"You may only travel {blue}east{white}")
+                    enter()
+                    location = "white bridge"
+
+            elif location == "core-sail arena":
+                scrollTxt(f"~[{blue}Core-Sail Arena{white}]~")
+                scrollTxt("")
+
+                if settings['minimap']:
+                    minimap_frozite()
+                    print("")
+
+                if settings["surroundings"]:
+                    scrollTxt(
+                        f"{italic}Surrounding the {blue}Core-Sail Arena{white} (CSA) is a {darkgrey}burrow{white} to the {teal}north{white} and the {turquoise}vast ocean{white} every where {teal}else{white}.{normal}{bold}")
+                    scrollTxt("")
+
+                if "coresail" not in triggers:
+                    triggers.append("coresail")
+                    scrollTxt(
+                        f"{italic}The {red}infamous{white} {turquoise}Core{white}-{darkgrey}Sail{white} {red}Arena{white} is now open to the {gold}public{white}, although many few would try their {orange}luck{white} at this {purple}deadly sport{white}.{normal}{bold}"
+                    )
+
+                elif settings["print out des"] is True:
+                    scrollTxt(
+                        f"{italic}The {red}infamous{white} {turquoise}Core{white}-{darkgrey}Sail{white} {red}Arena{white} is now open to the {gold}public{white}, although many few would try their {orange}luck{white} at this {purple}deadly sport{white}.{normal}{bold}"
+                    )
+
+                scrollTxt(f"{turquoise}What would you like to do{white}?")
+                scrollTxt(f"> {purple}Inv{white} / {darkgrey}Stats{white} / {red}Settings{white} / {silver}Save{white} | {teal}Arena{white} / {platinum}Leave{white}")
+                answer = get_input(["inv", 'stats', 'settings', "save", "arena", 'leave'])
+                scrollTxt("")
+
+                usual_options(answer)
+
+                if answer == "arena":
+                    leaving = False
+                    scrollTxt(f"You walk up the {turquoise}Core{white}-{darkgrey}Sail{white} {red}Arena{white}...")
+                    time.sleep(2)
+
+                    print()
+                    scrollTxt(f"The {red}crowds{white} cheer as you {darkgrey}step{white} on the stage.")
+                    scrollTxt(f"Your first {purple}opponent{white} is {lime}Muck{white} the {brown}Mutant{white}")
+                    enter()
+
+                    combat(["muck the mutant"])
+                    scrollTxt(f"The {blue}crowds{white} go {gold}wild{white} as this {darkgrey}newcomer{white} at taken down {lime}Muck{white}")
+                    print()
+                    time.sleep(2)
+                    scrollTxt(f"Your {red}prize{white} is {gold}200{white} GP")
+                    gp += 200
+                    print()
+                    
+                    while True:
+                        clear()
+                        scrollTxt(f"The {blue}crowds{white} go {gold}wild{white} as this {darkgrey}newcomer{white} at taken down {lime}Muck{white}")
+                        print()
+                        scrollTxt(f"Your {red}prize{white} is {gold}200{white} GP")
+                        print()
+                        scrollTxt(f"What would you like to {blue}do{white}?")
+                        scrollTxt(f"{red}1.{white} Fight Next Opponent , {red}2.{white} Leave Arena , {red}3.{white} Inv")
+                        answer = get_input(["1", "2", "3"])
+                        print()
+
+                        if answer == "1":
+                            break
+                        if answer == "2":
+                            leaving = True
+                            break
+                        if answer == "3":
+                            inventory()
+
+                    if leaving is False:
+                        scrollTxt(f"Your next {purple}opponent{white} is {darkgrey}Zanders{white} the {gold}Pirate{white}")
+                        enter()
+
+                        combat(["zanders the pirate"])
+                        scrollTxt(f"The {blue}crowds{white} love you now. You are becomming a {gold}new hero{white} among the {orange}warriors{white} here.")
+                        print()
+                        time.sleep(2)
+                        scrollTxt(f"Your {red}prize{white} is {gold}500{white} GP")
+                        gp += 500
+                        print()
+                        
+                        while True:
+                            clear()
+                            scrollTxt(f"The {blue}crowds{white} love you now. You are becomming a {gold}new hero{white} among the {orange}warriors{white} here.")
+                            print()
+                            scrollTxt(f"Your {red}prize{white} is {gold}500{white} GP")
+                            print()
+                            scrollTxt(f"What would you like to {blue}do{white}?")
+                            scrollTxt(f"{red}1.{white} Fight Next Opponent , {red}2.{white} Leave Arena , {red}3.{white} Inv")
+                            answer = get_input(["1", "2", "3"])
+                            print()
+
+                            if answer == "1":
+                                break
+                            if answer == "2":
+                                leaving = True
+                                break
+                            if answer == "3":
+                                inventory()
+
+                    if leaving is False:
+                        scrollTxt(f"Your next {purple}opponent{white} is The {copper}ROCK{white} {orange}GIANT{white}")
+                        enter()
+
+                        combat(["the rock giant"])
+                        scrollTxt(f"The {blue}crowds{white} throw {red}flowers{white} at you. You have been a {orange}Legend{white} quick to {gold}rise{white} through the ranks.")
+                        print()
+                        time.sleep(2)
+                        scrollTxt(f"Your {red}prize{white} is {gold}GROGS AXE OF SMASHING{white}")
+                        inv.append("grogs axe of smashing")
+                        print()
+                        
+                        while True:
+                            clear()
+                            scrollTxt(f"The {blue}crowds{white} throw {red}flowers{white} at you. You have been a {orange}Legend{white} quick to {gold}rise{white} through the ranks.")
+                            print()
+                            scrollTxt(f"Your {red}prize{white} is {gold}GROGS AXE OF SMASHING{white}")
+                            print()
+                            scrollTxt(f"What would you like to {blue}do{white}?")
+                            scrollTxt(f"{red}1.{white} Fight Next Opponent , {red}2.{white} Leave Arena , {red}3.{white} Inv")
+                            answer = get_input(["1", "2", "3"])
+                            print()
+
+                            if answer == "1":
+                                break
+                            if answer == "2":
+                                leaving = True
+                                break
+                            if answer == "3":
+                                inventory()
+
+                    if leaving is False:
+                        scrollTxt(f"Your next {purple}opponent{white} is The {blue}Blade{white} of the {darkgrey}North{white}")
+                        enter()
+
+                        combat(["blade of the north"])
+                        scrollTxt(f"The {blue}crowds{white} chant your {red}name{white} and sing {darkgrey}songs{white} of your {orange}wins{white}.")
+                        print()
+                        time.sleep(2)
+                        scrollTxt(f"Your {red}prize{white} is {teal}DUAL BLADES{white}")
+                        inv.append("dual blade [offhand]")
+                        inv.append("dual blade [weapon]")
+                        print()
+                        
+                        while True:
+                            clear()
+                            scrollTxt(f"The {blue}crowds{white} chant your {red}name{white} and sing {darkgrey}songs{white} of your {orange}wins{white}.")
+                            print()
+
+                            scrollTxt(f"Your {red}prize{white} is {teal}DUAL BLADES{white}")
+
+                            print()
+                            scrollTxt(f"What would you like to {blue}do{white}?")
+                            scrollTxt(f"{red}1.{white} Fight Next Opponent , {red}2.{white} Leave Arena , {red}3.{white} Inv")
+                            answer = get_input(["1", "2", "3"])
+                            print()
+
+                            if answer == "1":
+                                break
+                            if answer == "2":
+                                leaving = True
+                                break
+                            if answer == "3":
+                                inventory()
+                        
+                    if leaving is False:
+                            scrollTxt(f"Your next {purple}opponent{white} is The {purple}Other{white} {orange}Worlder{white}")
+                            enter()
+
+                            combat(["other worlder"])
+                            scrollTxt(f"You have {blue}done{white} it, the {red}impossible{white}, {gold}winning{white} the {turquoise}Core{white}-{darkgrey}Sail{white} {red}Arena{white}")
+                            print()
+                            time.sleep(2)
+                            scrollTxt(f"Your {red}prize{white} is {purple}WARPED{orange} SABER{white}")
+                            inv.append("warped saber")
+                            print()
+
+
+
+                elif answer == "leave":
+                    scrollTxt(f"You may only travel {blue}north{white}")
+                    enter()
+                    location = "goliaths burrow"
+            
             if pre_loc != location:
                 clear()
                 travel_encounters = ["ambush", "ambush", "ambush", "ambush", "merchant", "merchant", "merchant", "merchant", "guardian", "chest"]
@@ -10217,9 +10867,9 @@ What am I, in {purple}shadows{white} I creep?
                         scrollTxt(f"You draw you {darkgrey}weapon{white} and {red}charge{white}!")
                         enter()
 
-                        if lvl < 20: guardian = f"{platinum}platinum guardian{white}"
-                        elif lvl > 29: guardian = f"{teal}echo {darkgrey}guardian{white}"
-                        else: guardian = f"{turquoise}silence{silver} guardian{white}"
+                        if lvl < 20: guardian = f"platinum guardian"
+                        elif lvl > 29: guardian = f"echo guardian"
+                        else: guardian = f"silence guardian"
 
                         combat([guardian], 1.5)
                         scrollTxt(f"You stagger along the {brown}path{white}, {yellow}exhausted{white}")
@@ -10241,19 +10891,13 @@ What am I, in {purple}shadows{white} I creep?
                     if random.randint(1, 3) == 1:
                         scrollTxt(f"As you are {teal}walking{white} you find a {red}joun{blue}gler{white} merchant holding some {darkgrey}WeIrD iTeMs{white}")
                         Shop(["stone on stick", "netherite shovel", "the stick to heal"], [30, 50, 100], f"{red}joun{blue}gler{white} merchant", sp = 20)
-                        scrollTxt(f"You leave the {red}joun{blue}gler{white} merchant")
-                        enter()
                     
                     elif random.randint(1, 2) == 1:
                         scrollTxt(f"As you are {teal}walking{white} you find a {turquoise}wand{blue}er{white} holding a glowing {lime}green{white} staff")
                         Shop(["teleportation token", "teleportation staff", "world token"], [20, 200, 200], f"The {blue}wan{turquoise}der{white}", sp = 20)
-                        scrollTxt(f"You leave the stranger {platinum}figure{white}")
-                        enter()
                     else:
                         scrollTxt(f"As you are {teal}walking{white} you find a {darkgrey}blacksmith{white} setting up {brown}shop{white}, hammer in hand")
-                        Shop(["sharpening stone", "shrinker", "power guantlets"], [100, 150, 180], f"The {darkgrey}Black{white}{silver}SMITH™️", sp = 20)
-                        scrollTxt(f"You leave the {darkgrey}blacksmith{white} and countinue along the {brown}path{white}")
-                        enter()
+                        Shop(["sharpening stone", "shrinker", "power gauntlets"], [100, 150, 180], f"The {darkgrey}Black{white}{silver}SMITH™️", sp = 20)
 
                 elif encounter == "chest":
                     scrollTxt(f"A weird {brown}patch of dirt{white} catches your {copper}eye{white}.")
@@ -10294,7 +10938,5 @@ What am I, in {purple}shadows{white} I creep?
                     else:
                         scrollTxt(f"You decide it's better left {red}alone{white} and you continue along the {brown}path{white}")
                         enter()
-
-
 else:
     print("[!] There has been an error in the code\nWill be fixed soon")
